@@ -1,18 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-public class MyPanel extends JFrame implements MouseListener { // наследуемся от базовой панели
+public class MyPanel extends JFrame implements MouseListener  ,KeyEventDispatcher{ // наследуемся от базовой панели
 
     ArrayList<ArrayList<Pixel>> wsq = new ArrayList<>();
     Pixel pixel = new Pixel(0,0);
     long ltime=0;
-    public MyPanel() {
+    long time;
+    int keyCode;
+    long  dtime;
+    Player player=new Player();
+    public MyPanel(Player player2) {
         addMouseListener(this);
+
+        player=player2;
     }
 
     @Override
@@ -26,13 +30,17 @@ public class MyPanel extends JFrame implements MouseListener { // наследу
         g.clearRect(0, 0, getWidth(), getHeight());
 
 
-        long time = System.currentTimeMillis();
-        long dtime = time-ltime;
+        time = System.currentTimeMillis();
+        dtime = time-ltime;
         ltime = time;
         System.out.println(dtime);
+        player.Move(keyCode,dtime);
+        player.Draw(wsq);
+
         for(int i=0;i<=380;i++){
 
             for(int j=0;j<=200;j++){
+
                 pixel=wsq.get(i).get(j);
                 g.setColor(pixel.Compute());
                 if(pixel.light>0){
@@ -83,5 +91,12 @@ public class MyPanel extends JFrame implements MouseListener { // наследу
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent e) {
+        keyCode = e.getKeyCode();
+        return false;
     }
 }

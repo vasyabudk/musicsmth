@@ -1,14 +1,16 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
 
-
-        MyPanel frame = new MyPanel();
+        Player player=new Player();
+        MyPanel frame = new MyPanel(player);
         ArrayList<Pixel> w =new ArrayList<>();
         ArrayList<ArrayList<Pixel>> wsq = new ArrayList<>();
-
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();   // менеджер по трудоустройству слушателей клавиатуры
+        manager.addKeyEventDispatcher(frame);
         for(int i=0;i<=380;i++){
             w.clear();
             for(int j=0;j<=200;j++){
